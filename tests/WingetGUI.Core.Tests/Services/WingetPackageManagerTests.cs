@@ -44,10 +44,10 @@ namespace WingetGUI.Core.Tests.Services
         public async Task ShouldReturnExpectedResultWhenInstallingAPackage(string exitCode, bool expectedResult)
         {
             // Act
-            await _sut.InstallAsync("node", OnDataReceived, OnErrorRecevied, cancellationToken);
+            await _sut.InstallAsync("node", OnDataReceived, OnErrorReceived, cancellationToken);
 
             // Assert
-            _processManagerMock.Verify(m => m.StreamAsync(It.IsAny<string>(), "install node", OnDataReceived, OnErrorRecevied, cancellationToken), Times.Once);
+            _processManagerMock.Verify(m => m.StreamAsync(It.IsAny<string>(), "install node", OnDataReceived, OnErrorReceived, cancellationToken), Times.Once);
         }
 
         [Test]
@@ -56,10 +56,10 @@ namespace WingetGUI.Core.Tests.Services
         public async Task ShouldReturnExpectedResultWhenUninstallingAPackage(string exitCode, bool expectedResult)
         {
             // Act
-            await _sut.UninstallAsync("node", OnDataReceived, OnErrorRecevied, cancellationToken);
+            await _sut.UninstallAsync("node", OnDataReceived, OnErrorReceived, cancellationToken);
 
             // Assert
-            _processManagerMock.Verify(m => m.StreamAsync(It.IsAny<string>(), "uninstall node", OnDataReceived, OnErrorRecevied, cancellationToken), Times.Once);
+            _processManagerMock.Verify(m => m.StreamAsync(It.IsAny<string>(), "uninstall node", OnDataReceived, OnErrorReceived, cancellationToken), Times.Once);
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace WingetGUI.Core.Tests.Services
             _processManagerMock.Setup(m => m.ExecuteAsync(Constants.WingetProcessName, "upgrade", cancellationToken)).ReturnsAsync(new ProcessOutput { ExitCode = 0, Output = sourceData.Split("\n") });
 
             // Act
-            var packages = await _sut.FetchUpdgradablePackages(false, cancellationToken);
+            var packages = await _sut.FetchUpgradablePackages(false, cancellationToken);
 
             // Assert
             Assert.That(packages, Has.Count.EqualTo(expectedNumberOfPackages));
@@ -85,7 +85,7 @@ namespace WingetGUI.Core.Tests.Services
             _processManagerMock.Setup(m => m.ExecuteAsync(Constants.WingetProcessName, "upgrade --include-unknown", cancellationToken)).ReturnsAsync(new ProcessOutput { ExitCode = 0, Output = sourceData.Split("\n") });
 
             // Act
-            var packages = await _sut.FetchUpdgradablePackages(true, cancellationToken);
+            var packages = await _sut.FetchUpgradablePackages(true, cancellationToken);
 
             // Assert
             Assert.That(packages, Has.Count.EqualTo(expectedNumberOfPackages));
@@ -98,10 +98,10 @@ namespace WingetGUI.Core.Tests.Services
         public async Task ShouldReturnExpectedResultWhenUpgradingAPackage(string exitCode, bool expectedResult)
         {
             // Arrange
-            await _sut.UpgradeAsync("node", OnDataReceived, OnErrorRecevied, cancellationToken);
+            await _sut.UpgradeAsync("node", OnDataReceived, OnErrorReceived, cancellationToken);
 
             // Assert
-            _processManagerMock.Verify(m => m.StreamAsync(It.IsAny<string>(), "upgrade node", OnDataReceived, OnErrorRecevied, cancellationToken), Times.Once);
+            _processManagerMock.Verify(m => m.StreamAsync(It.IsAny<string>(), "upgrade node", OnDataReceived, OnErrorReceived, cancellationToken), Times.Once);
         }
 
         [Test]
@@ -209,7 +209,7 @@ namespace WingetGUI.Core.Tests.Services
             data.Add(item);
         }
 
-        private void OnErrorRecevied(string item)
+        private void OnErrorReceived(string item)
         {
             errorData.Add(item);
         }

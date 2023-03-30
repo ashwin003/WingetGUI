@@ -32,16 +32,16 @@ namespace WingetGUI.Core.Services
         /// <param name="onDataReceived">Callback for receiving data from the installation process</param>
         /// <param name="onErrorReceived">Callback for receiving error data from the installation process</param>
         /// <param name="cancellationToken">A handle to cancel execution</param>
-        /// <returns><see langword="true"/> if the action was successfull, <see langword="false"/> otherwise</returns>
+        /// <returns><see langword="true"/> if the action was successful, <see langword="false"/> otherwise</returns>
         Task UninstallAsync(string packageId, Action<string> onDataReceived, Action<string> onErrorReceived, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Fetches a list of packages which can be upgraded
         /// </summary>
-        /// <param name="incldueUnknown">Include packages with unknown version numbers</param>
+        /// <param name="includeUnknown">Include packages with unknown version numbers</param>
         /// <param name="cancellationToken">A handle to cancel execution</param>
         /// <returns>A readonly <see cref="List{T}"/> of <see cref="Package"/> instances</returns>
-        Task<IReadOnlyList<UpgradeablePackage>> FetchUpdgradablePackages(bool incldueUnknown, CancellationToken cancellationToken = default);
+        Task<IReadOnlyList<UpgradeablePackage>> FetchUpgradablePackages(bool includeUnknown, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Upgrades the specified package using winget
@@ -50,7 +50,7 @@ namespace WingetGUI.Core.Services
         /// <param name="onDataReceived">Callback for receiving data from the installation process</param>
         /// <param name="onErrorReceived">Callback for receiving error data from the installation process</param>
         /// <param name="cancellationToken">A handle to cancel execution</param>
-        /// <returns><see langword="true"/> if the action was successfull, <see langword="false"/> otherwise</returns>
+        /// <returns><see langword="true"/> if the action was successful, <see langword="false"/> otherwise</returns>
         Task UpgradeAsync(string packageId, Action<string> onDataReceived, Action<string> onErrorReceived, CancellationToken cancellationToken = default);
 
         /// <summary>

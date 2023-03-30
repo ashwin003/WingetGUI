@@ -19,9 +19,9 @@ namespace WingetGUI.Core.Services.Implementations
             return processOutput.ToPackages(1);
         }
 
-        public async Task<IReadOnlyList<UpgradeablePackage>> FetchUpdgradablePackages(bool incldueUnknown, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<UpgradeablePackage>> FetchUpgradablePackages(bool includeUnknown, CancellationToken cancellationToken = default)
         {
-            var argument = incldueUnknown ? "upgrade --include-unknown" : "upgrade";
+            var argument = includeUnknown ? "upgrade --include-unknown" : "upgrade";
             var processOutput = await processManager.ExecuteAsync(Constants.WingetProcessName, argument, cancellationToken);
             return processOutput.ToUpgradeablePackages(2);
         }
