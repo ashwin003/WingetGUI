@@ -57,18 +57,26 @@ namespace WingetGUI.Core.Extensions
                 var columnNameRow = output.ElementAt(nameRowIndex);
                 var columnNames = Regex.Replace(columnNameRow, @"\s+", " ").Split(" ");
                 var indexes = columnNames.Select(c => columnNameRow.IndexOf(c)).ToArray();
-                packages = output.Skip(nameRowIndex + 2).SkipLast(1).Select(source =>
-                new UpgradeablePackage
+                packages = output.Skip(nameRowIndex + 2).SkipLast(1).Select(source => PrepareUpgradeablePackage(source, indexes)
+                ).Where(p => p is not null).Select(p => p!).ToList();
+            }
+            return packages;
+        }
+
+        private static UpgradeablePackage? PrepareUpgradeablePackage(string source, int[] indexes)
+        {
+            try
+            {
+                return new UpgradeablePackage
                 {
                     Name = ExtractValue(source, indexes, 0),
                     Id = ExtractValue(source, indexes, 1),
                     InstalledVersion = ExtractValue(source, indexes, 2),
                     AvailableVersion = ExtractValue(source, indexes, 3),
                     Source = ExtractValue(source, indexes, 4),
-                }
-                ).ToList();
+                };
             }
-            return packages;
+            catch { return null; }
         }
 
         internal static PackageDetails ToPackageDetails(this ProcessOutput processOutput)
