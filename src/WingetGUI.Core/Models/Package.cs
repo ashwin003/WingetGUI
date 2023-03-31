@@ -8,8 +8,6 @@
 
         public string Version { get; init; } = "";
 
-        public string Match { get; init; } = "";
-
         public string Source { get; init; } = "";
 
         public bool HasValue => !string.IsNullOrWhiteSpace(Id);

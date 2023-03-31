@@ -28,7 +28,7 @@ namespace WingetGUI.Core.Tests.Services
                 "Feature                       Status   Property     Link",
                 "They can be configured through the settings file 'winget settings'.",
                 "The following experimental features are in progress.",
-            };
+            }.Reverse().ToList();
             var processOutput = new ProcessOutput { Output = outputLines };
             var expectedFeatures = new List<Feature>
             {

@@ -19,7 +19,7 @@ namespace WingetGUI.Core.Tests.Services
         }
 
         [Test]
-        [TestCase("Cactus Blockchain                             CactusNetwork.CactusBlockchainGUI 1.3.4            Tag: full-node winget\nChia Blockchain                               ChiaNetwork.GUIforChiaBlockchain  1.6.0            Tag: full-node winget\n-----------------------------------------------------------------------------------------------------------------------\nName                                          Id                                Version          Match          Source\n   \b-\b\\\b|\b/\b-\b\\\b|\b ", 2)]
+        [TestCase("Name                                          Id                                Version          Source\n-----------------------------------------------------------------------------------------------------------------------\nCactus Blockchain                             CactusNetwork.CactusBlockchainGUI 1.3.4            winget\nChia Blockchain                               ChiaNetwork.GUIforChiaBlockchain  1.6.0            winget", 2)]
         public async Task ShouldReturnExpectedNumberOfPackages(string sourceData, int expectedNumberOfPackages)
         {
             // Arrange
@@ -63,7 +63,7 @@ namespace WingetGUI.Core.Tests.Services
         }
 
         [Test]
-        [TestCase("12 upgrades available.\nDiscord                                             Discord.Discord                1.0.9005         1.0.9007     winget\nAndroid Studio                                      Google.AndroidStudio.Canary    2022.2.1.1       2022.2.1.6   winget\n-----------------------------------------------------------------------------------------------------------------------\nName                                                Id                             Version          Available    Source\n   \b-\b \n   \b-\b\\\b|\b/\b ", 2)]
+        [TestCase("Name                                                Id                             Version          Available    Source\n-----------------------------------------------------------------------------------------------------------------------\nDiscord                                             Discord.Discord                1.0.9005         1.0.9007     winget\nAndroid Studio                                      Google.AndroidStudio.Canary    2022.2.1.1       2022.2.1.6   winget\n12 upgrades available.", 2)]
         public async Task ShouldFetchUpgradeablePackages(string sourceData, int expectedNumberOfPackages)
         {
             // Arrange
@@ -78,7 +78,7 @@ namespace WingetGUI.Core.Tests.Services
         }
 
         [Test]
-        [TestCase("12 upgrades available.\nDiscord                                             Discord.Discord                1.0.9005         1.0.9007     winget\nAndroid Studio                                      Google.AndroidStudio.Canary    2022.2.1.1       2022.2.1.6   winget\n-----------------------------------------------------------------------------------------------------------------------\nName                                                Id                             Version          Available    Source\n   \b-\b \n   \b-\b\\\b|\b/\b ", 2)]
+        [TestCase("Name                                                Id                             Version          Available    Source\n-----------------------------------------------------------------------------------------------------------------------\nDiscord                                             Discord.Discord                1.0.9005         1.0.9007     winget\nAndroid Studio                                      Google.AndroidStudio.Canary    2022.2.1.1       2022.2.1.6   winget\n12 upgrades available.", 2)]
         public async Task ShouldFetchUpgradeablePackagesWithIncludeUnknown(string sourceData, int expectedNumberOfPackages)
         {
             // Arrange
@@ -136,8 +136,7 @@ namespace WingetGUI.Core.Tests.Services
                 "Publisher: Discord Inc.",
                 "Version: 1.0.9007",
                 "Found Discord [Discord.Discord]",
-                "   \b-\b\\\b|\b/\b-\b\\\b|\b/\b-\b\\\b ",
-            };
+            }.Reverse().ToArray();
             var processOutput = new ProcessOutput { Output = outputLines };
             var expectedPackageDetails = new PackageDetails
             {

@@ -1,5 +1,5 @@
-﻿using System.Collections.Concurrent;
-using System.ComponentModel;
+﻿using CliWrap;
+using CliWrap.Buffered;
 using System.Diagnostics;
 using WingetGUI.Core.Models;
 
@@ -7,27 +7,18 @@ namespace WingetGUI.Core.Services.Implementations
 {
     internal class ProcessManager : IProcessManager
     {
-        public Task<ProcessOutput> ExecuteAsync(string command, string arguments, CancellationToken cancellationToken)
+        public async Task<ProcessOutput> ExecuteAsync(string command, string arguments, CancellationToken cancellationToken)
         {
-            var process = PrepareProcess(command, arguments);
-            var tcs = new TaskCompletionSource<ProcessOutput>();
-
-            process.Exited += async (s, e) =>
-            {
-                await HandleProcessResponse(tcs, process);
-            };
-            cancellationToken.Register(() => { process.Kill(); process.Dispose(); });
-
             try
             {
-                process.Start();
+                var response = await Cli.Wrap(command).WithArguments(arguments).ExecuteBufferedAsync(cancellationToken);
+                var output = response.StandardOutput.Split(Environment.NewLine).Select(r => r.Split("\r").Last());
+                return new ProcessOutput { ExitCode = response.ExitCode, Output = output.ToList() };
             }
-            catch (Win32Exception)
+            catch(Exception)
             {
-                tcs.SetResult(new ProcessOutput { ExitCode = -1 });
+                return new ProcessOutput { ExitCode = -1 };
             }
-
-            return tcs.Task;
         }
 
         public async Task StreamAsync(string command, string arguments, Action<string> onDataReceived, Action<string> onErrorReceived, CancellationToken cancellationToken = default)
@@ -68,24 +59,6 @@ namespace WingetGUI.Core.Services.Implementations
                 StartInfo = processStartInfo,
                 EnableRaisingEvents = true
             };
-        }
-
-
-        private static async Task HandleProcessResponse(TaskCompletionSource<ProcessOutput> tcs, Process process)
-        {
-            var output = new ConcurrentBag<string>();
-            using var processOutputStream = process.StandardOutput;
-            while (!processOutputStream.EndOfStream)
-            {
-                var line = await processOutputStream.ReadLineAsync();
-
-                if (string.IsNullOrWhiteSpace(line)) continue;
-
-                output.Add(line);
-            }
-
-            tcs.SetResult(new ProcessOutput { ExitCode = process.ExitCode, Output = output.ToList() });
-            process.Dispose();
         }
     }
 }

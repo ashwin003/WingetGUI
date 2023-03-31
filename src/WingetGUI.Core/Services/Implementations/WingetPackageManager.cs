@@ -16,14 +16,14 @@ namespace WingetGUI.Core.Services.Implementations
         public async Task<IReadOnlyList<Package>> SearchPackages(string searchTerm, CancellationToken cancellationToken)
         {
             var processOutput = await processManager.ExecuteAsync(Constants.WingetProcessName, $"search {searchTerm} --accept-source-agreements", cancellationToken);
-            return processOutput.ToPackages(1);
+            return processOutput.ToPackages(0);
         }
 
         public async Task<IReadOnlyList<UpgradeablePackage>> FetchUpgradablePackages(bool includeUnknown, CancellationToken cancellationToken = default)
         {
             var argument = includeUnknown ? "upgrade --include-unknown" : "upgrade";
             var processOutput = await processManager.ExecuteAsync(Constants.WingetProcessName, argument, cancellationToken);
-            return processOutput.ToUpgradeablePackages(2);
+            return processOutput.ToUpgradeablePackages(0);
         }
 
         public async Task InstallAsync(string packageId, Action<string> onDataReceived, Action<string> onErrorReceived, CancellationToken cancellationToken = default)

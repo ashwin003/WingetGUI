@@ -1,4 +1,5 @@
-﻿using WingetGUI.Core.Exceptions;
+﻿using System;
+using WingetGUI.Core.Exceptions;
 using WingetGUI.Core.Extensions;
 using WingetGUI.Core.Tests.Utils;
 
@@ -27,10 +28,10 @@ namespace WingetGUI.Core.Tests.Extensions
             {
                 Output = new List<string>
                 {
-                    "winget  https://cdn.winget.microsoft.com/cache",
-                    "msstore https://storeedgefd.dsx.mp.microsoft.com/v9.0",
-                    "-----------------------------------------------------",
                     "Name    Argument",
+                    "-----------------------------------------------------",
+                    "msstore https://storeedgefd.dsx.mp.microsoft.com/v9.0",
+                    "winget  https://cdn.winget.microsoft.com/cache",
                 }
             };
 
@@ -49,18 +50,16 @@ namespace WingetGUI.Core.Tests.Extensions
             {
                 new Package
                 {
-                    Name = "Chia Blockchain",
-                    Id = "ChiaNetwork.GUIforChiaBlockchain",
-                    Version = "1.6.0",
-                    Match = "Tag: full-node",
-                    Source = "winget"
+                    Name = "Blender",
+                    Id = "9PP3C07GTVRH",
+                    Version = "Unknown",
+                    Source = "msstore"
                 },
                 new Package
                 {
-                    Name = "Cactus Blockchain",
-                    Id = "CactusNetwork.CactusBlockchainGUI",
-                    Version = "1.3.4",
-                    Match = "Tag: full-node",
+                    Name = "Blender",
+                    Id = "BlenderFoundation.Blender",
+                    Version = "3.5.0",
                     Source = "winget"
                 },
             };
@@ -68,16 +67,16 @@ namespace WingetGUI.Core.Tests.Extensions
             {
                 Output = new List<string>
                 {
-                    "Cactus Blockchain                             CactusNetwork.CactusBlockchainGUI 1.3.4            Tag: full-node winget",
-                    "Chia Blockchain                               ChiaNetwork.GUIforChiaBlockchain  1.6.0            Tag: full-node winget",
-                    "-----------------------------------------------------------------------------------------------------------------------",
-                    "Name                                          Id                                Version          Match          Source",
-                    "   \b-\b\\\b|\b/\b-\b\\\b|\b "
+                    "Name                                             Id                        Version Source",
+                    "-------------------------------------------------------------------------------------------",
+                    "Blender                                          9PP3C07GTVRH              Unknown msstore",
+                    "Blender                                          BlenderFoundation.Blender 3.5.0   winget",
+                    "",
                 }
             };
 
             // Act
-            var packages = processOutput.ToPackages(1);
+            var packages = processOutput.ToPackages(0);
 
             // Assert
             Assert.That(CollectionMatcher.Match(expectedResult, packages), Is.True);
@@ -110,18 +109,16 @@ namespace WingetGUI.Core.Tests.Extensions
             {
                 Output = new List<string>
                 {
-                    "2 upgrades available.",
-                    "Discord                                             Discord.Discord                1.0.9005         1.0.9007     winget",
-                    "Android Studio                                      Google.AndroidStudio.Canary    2022.2.1.1       2022.2.1.6   winget",
+                    "Name                                                   Id                           Version        Available     Source",
                     "-----------------------------------------------------------------------------------------------------------------------",
-                    "Name                                                Id                             Version          Available    Source",
-                    "   \b-\b ",
-                    "   \b-\b\\\b|\b/\b "
+                    "Android Studio                                         Google.AndroidStudio.Canary    2022.2.1.1       2022.2.1.6   winget",
+                    "Discord                                                Discord.Discord                1.0.9005         1.0.9007     winget",
+                    "2 upgrades available.",
                 }
             };
 
             // Act
-            var packages = processOutput.ToUpgradeablePackages(2);
+            var packages = processOutput.ToUpgradeablePackages(0);
 
             // Assert
             Assert.That(CollectionMatcher.Match(expectedResult, packages), Is.True);
@@ -133,37 +130,37 @@ namespace WingetGUI.Core.Tests.Extensions
             // Arrange
             var outputLines = new[]
             {
-                "  Installer SHA256: 0ad34ac29ecc6dd01f40b46ab0cb1a971b5242aa28ee1a9b72fdb9847c6d6ee1",
-                "  Installer Url: https://dl.discordapp.net/distro/app/stable/win/x86/1.0.9007/DiscordSetup.exe",
-                "  Installer Locale: en-US",
-                "  Installer Type: exe",
-                "Installer:",
-                "  voip",
-                "  voice-chat",
-                "  voice",
-                "  gaming",
-                "  chat",
-                "Tags:",
-                "Copyright Url: https://discord.com/licenses",
-                "Copyright: (c) 2021 Discord Inc.",
-                "Privacy Url: https://discord.com/privacy",
-                "License Url: https://discord.com/licenses",
-                "License: Proprietary",
-                "Homepage: https://discord.com",
-                "Description: Whether youΓÇÖre part of a school club, gaming group, worldwide art community, or just a handful of friends that want to spend time together, Discord makes it easy to talk every day and hang out more often.",
-                "Moniker: discord",
-                "Author: Discord Inc.",
-                "Publisher Support Url: https://support.discord.com",
-                "Publisher Url: https://discord.com",
-                "Publisher: Discord Inc.",
-                "Version: 1.0.9007",
                 "Found Discord [Discord.Discord]",
-                "   \b-\b\\\b|\b/\b-\b\\\b|\b/\b-\b\\\b ",
+"Version: 1.0.9011",
+"Publisher: Discord Inc.",
+"Publisher Url: https://discord.com",
+"Publisher Support Url: https://support.discord.com",
+"Author: Discord Inc.",
+"Moniker: discord",
+"Description: Whether youΓÇÖre part of a school club, gaming group, worldwide art community, or just a handful of friends that want to spend time together, Discord makes it easy to talk every day and hang out more often.",
+"Homepage: https://discord.com",
+"License: Proprietary",
+"License Url: https://discord.com/licenses",
+"Privacy Url: https://discord.com/privacy",
+"Copyright: (c) 2021 Discord Inc.",
+"Copyright Url: https://discord.com/licenses",
+"Tags:",
+"  chat",
+"  gaming",
+"  voice",
+"  voice-chat",
+"  voip",
+"Installer:",
+            "  Installer Type: exe",
+"  Installer Locale: en-US",
+"  Installer Url: https://dl.discordapp.net/distro/app/stable/win/x86/1.0.9011/DiscordSetup.exe",
+"  Installer SHA256: d7d109e6d48cbc08320b4af0ed2080826699867c80803fec9e49ce0cf47d2d0f",
+""
             };
             var processOutput = new ProcessOutput { Output = outputLines };
             var expectedPackageDetails = new PackageDetails
             {
-                Version = "1.0.9007",
+                Version = "1.0.9011",
                 Name = "Discord [Discord.Discord]",
                 Publisher = "Discord Inc.",
                 PublisherUrl = "https://discord.com",
@@ -189,8 +186,8 @@ namespace WingetGUI.Core.Tests.Extensions
                 {
                     Type = "exe",
                     Locale = "en-US",
-                    Url = "https://dl.discordapp.net/distro/app/stable/win/x86/1.0.9007/DiscordSetup.exe",
-                    Hash = "0ad34ac29ecc6dd01f40b46ab0cb1a971b5242aa28ee1a9b72fdb9847c6d6ee1"
+                    Url = "https://dl.discordapp.net/distro/app/stable/win/x86/1.0.9011/DiscordSetup.exe",
+                    Hash = "d7d109e6d48cbc08320b4af0ed2080826699867c80803fec9e49ce0cf47d2d0f"
                 }
             };
             var propertiesToTest = new[]
@@ -244,13 +241,16 @@ namespace WingetGUI.Core.Tests.Extensions
             // Arrange
             var outputLines = new[]
             {
-                "Zip Installation              Disabled zipInstall   https://aka.ms/winget-settings",
-                "Direct MSI Installation       Disabled directMSI    https://aka.ms/winget-settings",
-                "Show Dependencies Information Disabled dependencies https://aka.ms/winget-settings",
-              "----------------------------------------------------------------------------------",
-                "Feature                       Status   Property     Link",
-                "They can be configured through the settings file 'winget settings'.",
                 "The following experimental features are in progress.",
+                "They can be configured through the settings file 'winget settings'.",
+                "",
+                "Feature                       Status   Property                  Link",
+                "-----------------------------------------------------------------------------------------------",
+                "Show Dependencies Information Disabled dependencies              https://aka.ms/winget-settings",
+                "Direct MSI Installation       Disabled directMSI                 https://aka.ms/winget-settings",
+                "Package Pinning               Disabled pinning                   https://aka.ms/winget-settings",
+                "Uninstall Previous Argument   Disabled uninstallPreviousArgument https://aka.ms/winget-settings",
+                ""
             };
             var processOutput = new ProcessOutput { Output = outputLines };
             var expectedFeatures = new List<Feature>
@@ -271,15 +271,22 @@ namespace WingetGUI.Core.Tests.Extensions
                 },
                 new Feature
                 {
-                    Name= "Zip Installation",
+                    Name= "Package Pinning",
                     Enabled = false,
-                    Property = "zipInstall",
+                    Property = "pinning",
+                    Link = "https://aka.ms/winget-settings"
+                },
+                new Feature
+                {
+                    Name= "Uninstall Previous Argument",
+                    Enabled = false,
+                    Property = "uninstallPreviousArgument",
                     Link = "https://aka.ms/winget-settings"
                 },
             };
 
             // Act
-            var features = processOutput.ToFeatures(2);
+            var features = processOutput.ToFeatures(3);
 
             // Assert
             Assert.That(CollectionMatcher.Match(expectedFeatures, features), Is.True);
