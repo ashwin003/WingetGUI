@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 
 namespace WingetGUI.Core.Tests.Utils
 {
@@ -41,6 +42,10 @@ namespace WingetGUI.Core.Tests.Utils
             if (expectedValue is null || actualValue is null) return false;
 
             var isMatch = expectedValue.Equals(actualValue);
+            if(!isMatch)
+            {
+                Debug.WriteLine($"Mismatch found for ${property.Name}. Expected: ${expectedValue}. Actual: ${actualValue}");
+            }
             return isMatch;
 
         }
