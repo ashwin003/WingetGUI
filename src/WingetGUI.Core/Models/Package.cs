@@ -13,18 +13,14 @@
         public bool HasValue => !string.IsNullOrWhiteSpace(Id);
     }
 
-    public class UpgradeablePackage : IPackage
+    public class InstalledPackage : Package
     {
-        public string Name { get; init; } = "";
-
-        public string Id { get; init; } = "";
-
         public string InstalledVersion { get; init; } = "";
 
         public string AvailableVersion { get; init; } = "";
+    }
 
-        public string Source { get; init; } = "";
-
-        public bool HasValue => !string.IsNullOrWhiteSpace(Id);
+    public class UpgradeablePackage : InstalledPackage
+    {
     }
 }

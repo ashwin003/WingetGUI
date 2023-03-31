@@ -79,6 +79,21 @@ namespace WingetGUI.Core.Tests.Services
 
         [Test]
         [TestCase("Name                                                Id                             Version          Available    Source\n-----------------------------------------------------------------------------------------------------------------------\nDiscord                                             Discord.Discord                1.0.9005         1.0.9007     winget\nAndroid Studio                                      Google.AndroidStudio.Canary    2022.2.1.1       2022.2.1.6   winget\n12 upgrades available.", 2)]
+        public async Task ShouldFetchInstalledPackages(string sourceData, int expectedNumberOfPackages)
+        {
+            // Arrange
+            _processManagerMock.Setup(m => m.ExecuteAsync(Constants.WingetProcessName, "list", cancellationToken)).ReturnsAsync(new ProcessOutput { ExitCode = 0, Output = sourceData.Split("\n") });
+
+            // Act
+            var packages = await _sut.FetchInstalledPackagesAsync(cancellationToken);
+
+            // Assert
+            Assert.That(packages, Has.Count.EqualTo(expectedNumberOfPackages));
+            _processManagerMock.Verify(m => m.ExecuteAsync(Constants.WingetProcessName, "list", cancellationToken), Times.Once);
+        }
+
+        [Test]
+        [TestCase("Name                                                Id                             Version          Available    Source\n-----------------------------------------------------------------------------------------------------------------------\nDiscord                                             Discord.Discord                1.0.9005         1.0.9007     winget\nAndroid Studio                                      Google.AndroidStudio.Canary    2022.2.1.1       2022.2.1.6   winget\n12 upgrades available.", 2)]
         public async Task ShouldFetchUpgradeablePackagesWithIncludeUnknown(string sourceData, int expectedNumberOfPackages)
         {
             // Arrange

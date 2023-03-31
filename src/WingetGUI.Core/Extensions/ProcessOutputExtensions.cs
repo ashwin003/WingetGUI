@@ -62,11 +62,42 @@ namespace WingetGUI.Core.Extensions
             return packages;
         }
 
+        internal static IReadOnlyList<InstalledPackage> ToInstalledPackages(this ProcessOutput processOutput, int nameRowIndex = 0)
+        {
+            var packages = new List<InstalledPackage>();
+            if (processOutput is not null)
+            {
+                var output = processOutput.Output;
+                var columnNameRow = output.ElementAt(nameRowIndex);
+                var columnNames = Regex.Replace(columnNameRow, @"\s+", " ").Split(" ");
+                var indexes = columnNames.Select(c => columnNameRow.IndexOf(c)).ToArray();
+                packages = output.Skip(nameRowIndex + 2).SkipLast(1).Select(source => PrepareInstalledPackage(source, indexes)
+                ).Where(p => p is not null).Select(p => p!).ToList();
+            }
+            return packages;
+        }
+
         private static UpgradeablePackage? PrepareUpgradeablePackage(string source, int[] indexes)
         {
             try
             {
                 return new UpgradeablePackage
+                {
+                    Name = ExtractValue(source, indexes, 0),
+                    Id = ExtractValue(source, indexes, 1),
+                    InstalledVersion = ExtractValue(source, indexes, 2),
+                    AvailableVersion = ExtractValue(source, indexes, 3),
+                    Source = ExtractValue(source, indexes, 4),
+                };
+            }
+            catch { return null; }
+        }
+
+        private static InstalledPackage? PrepareInstalledPackage(string source, int[] indexes)
+        {
+            try
+            {
+                return new InstalledPackage
                 {
                     Name = ExtractValue(source, indexes, 0),
                     Id = ExtractValue(source, indexes, 1),

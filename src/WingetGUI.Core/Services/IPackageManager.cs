@@ -8,6 +8,13 @@ namespace WingetGUI.Core.Services
     public interface IPackageManager
     {
         /// <summary>
+        /// Fetches the list of installed packages using winget CLI
+        /// </summary>
+        /// <param name="cancellationToken">A handle to cancel execution</param>
+        /// <returns>A readonly <see cref="List{T}"/> of <see cref="InstalledPackage"/> instances</returns>
+        Task<IReadOnlyList<InstalledPackage>> FetchInstalledPackagesAsync(CancellationToken cancellationToken = default);
+        
+        /// <summary>
         /// Searches for packages using the given search term
         /// </summary>
         /// <param name="searchTerm">The term to search</param>

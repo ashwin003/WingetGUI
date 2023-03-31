@@ -16,14 +16,14 @@ namespace WingetGUI.Core.Services.Implementations
         public async Task<IReadOnlyList<Package>> SearchPackages(string searchTerm, CancellationToken cancellationToken)
         {
             var processOutput = await processManager.ExecuteAsync(Constants.WingetProcessName, $"search {searchTerm} --accept-source-agreements", cancellationToken);
-            return processOutput.ToPackages(0);
+            return processOutput.ToPackages();
         }
 
         public async Task<IReadOnlyList<UpgradeablePackage>> FetchUpgradablePackages(bool includeUnknown, CancellationToken cancellationToken = default)
         {
             var argument = includeUnknown ? "upgrade --include-unknown" : "upgrade";
             var processOutput = await processManager.ExecuteAsync(Constants.WingetProcessName, argument, cancellationToken);
-            return processOutput.ToUpgradeablePackages(0);
+            return processOutput.ToUpgradeablePackages();
         }
 
         public async Task InstallAsync(string packageId, Action<string> onDataReceived, Action<string> onErrorReceived, CancellationToken cancellationToken = default)
@@ -45,6 +45,12 @@ namespace WingetGUI.Core.Services.Implementations
         {
             var processOutput = await processManager.ExecuteAsync(Constants.WingetProcessName, $"show {packageId}", cancellationToken);
             return processOutput.ToPackageDetails();
+        }
+
+        public async Task<IReadOnlyList<InstalledPackage>> FetchInstalledPackagesAsync(CancellationToken cancellationToken = default)
+        {
+            var processOutput = await processManager.ExecuteAsync(Constants.WingetProcessName, "list", cancellationToken);
+            return processOutput.ToInstalledPackages();
         }
     }
 }
