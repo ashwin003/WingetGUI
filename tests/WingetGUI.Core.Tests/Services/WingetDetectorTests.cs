@@ -48,7 +48,7 @@
             _processManagerMock.Setup(m => m.ExecuteAsync(It.IsAny<string>(), "--version", cancellationToken)).ReturnsAsync(new ProcessOutput { Output = new List<string> { version } });
 
             // Act
-            var response = await _sut.FetchInstalledVertionAsync(cancellationToken);
+            var response = await _sut.FetchInstalledVersionAsync(cancellationToken);
 
             // Assert
             Assert.That(version, Is.EqualTo(response));

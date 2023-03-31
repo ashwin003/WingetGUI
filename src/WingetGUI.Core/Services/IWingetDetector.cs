@@ -17,6 +17,6 @@
         /// </summary>
         /// <param name="cancellationToken">A handle to cancel execution</param>
         /// <returns>Installed winget version</returns>
-        Task<string> FetchInstalledVertionAsync(CancellationToken cancellationToken = default);
+        Task<string> FetchInstalledVersionAsync(CancellationToken cancellationToken = default);
     }
 }

@@ -17,10 +17,10 @@ namespace WingetGUI.Core.Services.Implementations
             return processOutput?.IsSuccess ?? false;
         }
 
-        public async Task<string> FetchInstalledVertionAsync(CancellationToken cancellationToken = default)
+        public async Task<string> FetchInstalledVersionAsync(CancellationToken cancellationToken = default)
         {
             var processOutput = await processManager.ExecuteAsync(Constants.WingetProcessName, "--version", cancellationToken);
-            return processOutput.Output.First();
+            return processOutput.Output[0];
         }
     }
 }
