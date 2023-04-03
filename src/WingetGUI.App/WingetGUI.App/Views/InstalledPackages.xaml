@@ -1,0 +1,18 @@
+﻿<Page x:Class="WingetGUI.App.Views.InstalledPackages" 
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    mc:Ignorable="d">
+    <ScrollViewer>
+        <controls:DataGrid VerticalAlignment="Top" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden" ItemsSource="{Binding InstalledPackages}" AutoGenerateColumns="False" CanUserReorderColumns="False">
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn Header="Name" Binding="{Binding Name}"></controls:DataGridTextColumn>
+                <controls:DataGridTextColumn Header="Installed Version" Binding="{Binding InstalledVersion}"></controls:DataGridTextColumn>
+                <controls:DataGridTextColumn Header="Available Version" Binding="{Binding AvailableVersion}"></controls:DataGridTextColumn>
+                <controls:DataGridTextColumn Header="Source" Binding="{Binding Source}"></controls:DataGridTextColumn>
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
+    </ScrollViewer>
+</Page>

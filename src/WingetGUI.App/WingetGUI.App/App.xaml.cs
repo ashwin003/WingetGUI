@@ -46,7 +46,9 @@ namespace WingetGUI.App
                 // Default Activation Handler
                 .AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>()
                 // winget Services
-                .AddWingetServices();
+                .AddWingetServices()
+                // ViewModels
+                .AddViewModels();
         })
         .Build();
 
