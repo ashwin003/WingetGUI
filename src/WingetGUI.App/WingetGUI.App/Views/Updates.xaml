@@ -3,21 +3,29 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
-    mc:Ignorable="d">
+      xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:viewmodels="using:WingetGUI.App.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:UpdatesViewModel}"
+      xmlns:models="using:WingetGUI.App.Models"
+      mc:Ignorable="d">
     <ScrollViewer>
-        <controls:DataGrid VerticalAlignment="Top" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden" ItemsSource="{Binding UpgradeablePackages}" AutoGenerateColumns="False" CanUserReorderColumns="False">
-            <controls:DataGrid.Columns>
-                <controls:DataGridCheckBoxColumn Header="" Binding="{Binding IsSelected, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" IsReadOnly="False">
-                    <controls:DataGridCheckBoxColumn.ElementStyle>
-                        <Style TargetType="CheckBox"/>
-                    </controls:DataGridCheckBoxColumn.ElementStyle>
-                </controls:DataGridCheckBoxColumn>
-                <controls:DataGridTextColumn Header="Name" Binding="{Binding Name}"></controls:DataGridTextColumn>
-                <controls:DataGridTextColumn Header="Installed Version" Binding="{Binding InstalledVersion}"></controls:DataGridTextColumn>
-                <controls:DataGridTextColumn Header="Available Version" Binding="{Binding AvailableVersion}"></controls:DataGridTextColumn>
-                <controls:DataGridTextColumn Header="Source" Binding="{Binding Source}"></controls:DataGridTextColumn>
-            </controls:DataGrid.Columns>
-        </controls:DataGrid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <controls:DataGrid VerticalAlignment="Top" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Hidden" ItemsSource="{Binding UpgradeablePackages}" AutoGenerateColumns="False" CanUserReorderColumns="False" d:DataContext="{d:DesignInstance Type=models:PackageToUpgrade}">
+                <controls:DataGrid.Columns>
+                    <controls:DataGridCheckBoxColumn  Header="" Binding="{Binding IsSelected, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" IsReadOnly="False">
+                        <controls:DataGridCheckBoxColumn.ElementStyle>
+                            <Style TargetType="CheckBox"/>
+                        </controls:DataGridCheckBoxColumn.ElementStyle>
+                    </controls:DataGridCheckBoxColumn>
+                    <controls:DataGridTextColumn Header="Name" Binding="{Binding Name}"></controls:DataGridTextColumn>
+                    <controls:DataGridTextColumn Header="Installed Version" Binding="{Binding InstalledVersion}"></controls:DataGridTextColumn>
+                    <controls:DataGridTextColumn Header="Available Version" Binding="{Binding AvailableVersion}"></controls:DataGridTextColumn>
+                    <controls:DataGridTextColumn Header="Source" Binding="{Binding Source}"></controls:DataGridTextColumn>
+                </controls:DataGrid.Columns>
+            </controls:DataGrid>
+            <Button Command="{Binding UpdatePackagesCommand}" Grid.Row="1">Upgrade</Button>
+        </Grid>
     </ScrollViewer>
 </Page>

@@ -56,7 +56,7 @@ namespace WingetGUI.Core.Extensions
                 var columnNameRow = output.ElementAt(nameRowIndex);
                 var columnNames = Regex.Replace(columnNameRow, @"\s+", " ").Split(" ");
                 var indexes = columnNames.Select(c => columnNameRow.IndexOf(c)).ToArray();
-                packages = output.Skip(nameRowIndex + 2).SkipLast(1).Select(source => PrepareUpgradeablePackage(source, indexes)
+                packages = output.Skip(nameRowIndex + 2).TakeWhile(p => !p.EndsWith("upgrades available.")).Select(source => PrepareUpgradeablePackage(source, indexes)
                 ).Where(p => p is not null).Select(p => p!).ToList();
             }
             return packages;

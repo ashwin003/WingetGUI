@@ -20,11 +20,17 @@ namespace WingetGUI.App.ViewModels
             this.packageManager = packageManager;
         }
 
+        [RelayCommand]
+        public void UpdatePackages()
+        {
+
+        }
+
         public async Task LoadPackagesAsync()
         {
             IsLoading = true;
             var packages = await Task.Run(async () => await packageManager.FetchUpgradablePackages(false));
-            UpgradeablePackages = packages.Select(package => new PackageToUpgrade { Id = package.Id, AvailableVersion = package.AvailableVersion, InstalledVersion = package.InstalledVersion, Name = package.Name, Source = package.Source, Version = package.Version, IsSelected = false });
+            UpgradeablePackages = packages.Select(package => new PackageToUpgrade { Id = package.Id, AvailableVersion = package.AvailableVersion, InstalledVersion = package.InstalledVersion, Name = package.Name, Source = package.Source, Version = package.Version, IsSelected = false }).ToList();
             IsLoading = false;
         }
     }

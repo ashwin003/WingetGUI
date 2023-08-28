@@ -2,7 +2,7 @@
 
 namespace WingetGUI.App.Models
 {
-    public sealed class PackageToUpgrade : UpgradeablePackage
+    public class PackageToUpgrade : UpgradeablePackage
     {
         public bool IsSelected { get; set; }
     }
